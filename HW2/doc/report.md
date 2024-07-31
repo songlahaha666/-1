@@ -1,19 +1,28 @@
-# HW 1 阿克曼函數
+# HW 1 Powerset
 
 ## 1. 解題說明
 
-以遞迴實作阿克曼函數，已知阿克曼函數定義如下：
+使用遞迴函式計算出一個集合裡的各種可能子集合，再將所有子集合合併成一個大集合。
 
-$$A(m,n) = { n+1 , if m=0 ; A(m-1,1) , if n=0 ; A(m-1,A(m,n-1) , otherwise ; }$$
-
-
-實作參見檔案 `main.cpp`，其遞迴函式：
+實作參見檔案 `powerset.cpp`，其遞迴函式：
 
 ```cpp
-int A(int m, int n) {
-    if (m == 0) { return n + 1; }
-    else if (m > 0 && n == 0) { return A(m - 1, 1); }
-    else { return A(m - 1, A(m, n - 1)); }
+void generatePowerset(string set[], string subset[], int n, int index, int subsetIndex) {
+    if (index == n) {
+        cout << "{ ";
+        for (int i = 0; i < subsetIndex; i++) {
+            cout << subset[i] << " ";
+        }
+        cout << "}" << endl;
+        return;
+    }
+
+    // 不選擇當前元素，直接遞迴下一個元素
+    generatePowerset(set, subset, n, index + 1, subsetIndex);
+
+    // 選擇當前元素，加入子集，並遞迴下一個元素
+    subset[subsetIndex] = set[index];
+    generatePowerset(set, subset, n, index + 1, subsetIndex + 1);
 }
 ```
 
@@ -21,51 +30,53 @@ int A(int m, int n) {
 
 ```cpp
 int main() {
-    int m, n;
-    while (cin >> m >> n) { //數入變數
-        cout << A(m, n) << endl; //呼叫函式A，將回傳值輸出
-    }
+    string S[] = {"a", "b", "c"};
+    int n = sizeof(S) / sizeof(S[0]);
+    string subset[n];
+
+    cout << "Powerset: {" << endl;
+    generatePowerset(S, subset, n, 0, 0);
+    cout << "}" << endl;
+
     return 0;
 }
 ```
 
-## 2. 效能分析
-
-- $f(n) = O(n)$
-- $S(P) = 1 \times n$, 1 個變數、n 次遞迴。
-- $T(P) = C \times n$, 每層迴圈所需 C 時間、n 次遞迴。
-## 3. 測試與過程
+## 3. 效能分析
 
 ### Worst Case
 
-時間複雜度T(m,n)=O(A(m,n))
+時間複雜度T(n)=O(n*2^n)
 
-空間複雜度S(m,n)=O(A(m,n))
+空間複雜度S(n)=O(n)
 
 ### Best Case
 
-時間複雜度T(m,n)=O(1)
+時間複雜度T(n)=O(n*2^n)
 
-空間複雜度S(m,n)=O(1)
+空間複雜度S(n)=O(n)
 
 ### Average Case
 
-近似於Worst Case
+時間複雜度T(n)=O(n*2^n)
 
-### Input
+空間複雜度S(n)=O(n)
 
-```plain
-4 0
-1 3
-2 2
-```
+## 4. 測試與過程
 
 ### Output
 
 ```plain
-13
-5
-7
+Powerset: {                                                                                                                                                                                              
+{ }        
+{ c }      
+{ b }
+{ b c }
+{ a }
+{ a c }
+{ a b }
+{ a b c }
+}
 ```
 
 
