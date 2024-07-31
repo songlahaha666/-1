@@ -1,29 +1,29 @@
-# HW 1 自然數之和
+# HW 1 阿克曼函數
 
 ## 1. 解題說明
 
-以遞迴實作計算 N 階層的函式，已知階層計算公式如下：
+以遞迴實作阿克曼函數，已知阿克曼函數定義如下：
 
-$$N! = N + (N-1)! = N + (N-1) + \dots + 2 + 1$$
+$$A(m,n) = { n+1 , if m=0 ; A(m-1,1) , if n=0 ; A(m-1,A(m,n-1) , otherwise ; }$$
 
-實作參見檔案 `sum.cpp`，其遞迴函式：
+
+實作參見檔案 `main.cpp`，其遞迴函式：
 
 ```cpp
-int sigma(int n){
-    if(n<0) throw "n < 0";
-    else if(n<=1) return n;
-    return n+sigma(n-1);
+int A(int m, int n) {
+    if (m == 0) { return n + 1; }
+    else if (m > 0 && n == 0) { return A(m - 1, 1); }
+    else { return A(m - 1, A(m, n - 1)); }
 }
 ```
 
 ## 2. 演算法設計與實作
 
 ```cpp
-int main(){
-    int n=0;
-    while(cin>>n){             // 一直輸入
-        if(n<=0) break;        // 直到輸入小於等於零
-        cout<<sigma(n)<<"\n";  // 依據每次輸入，輸出 n!
+int main() {
+    int m, n;
+    while (cin >> m >> n) { //數入變數
+        cout << A(m, n) << endl; //呼叫函式A，將回傳值輸出
     }
     return 0;
 }
@@ -34,29 +34,38 @@ int main(){
 - $f(n) = O(n)$
 - $S(P) = 1 \times n$, 1 個變數、n 次遞迴。
 - $T(P) = C \times n$, 每層迴圈所需 C 時間、n 次遞迴。
-
 ## 3. 測試與過程
+
+### Worst Case
+
+時間複雜度T(m,n)=O(A(m,n))
+
+空間複雜度S(m,n)=O(A(m,n))
+
+### Best Case
+
+時間複雜度T(m,n)=O(1)
+
+空間複雜度S(m,n)=O(1)
+
+### Average Case
+
+近似於Worst Case
 
 ### Input
 
 ```plain
-3
-7
-11
-
+4 0
+1 3
+2 2
 ```
 
 ### Output
 
 ```plain
-6
-28
-66
-
+13
+5
+7
 ```
 
-### 驗證
 
-此函式遞迴終止條件為當 $n$ 為 $0$ 或 $1$，若欲求得$3!$，則呼叫 $sigma(3)$，進入函式後，首先第一層 $n = 3 > 1$ 所以回傳 $n + sigma(n - 1)$，即 $3 + sigma(2)$，接著第二層計算 $sigma(2)$，$n = 2 > 1$，所以回傳 $2 + sigma(1)$，接下來到第三層時，$n = 1 \le 1$，符合終止條件 $(n \le 1)$，因此回傳 $n$，即 $1$。
-
-$$sigma(3) = 3 + sigma(2) = 3+2 + sigma(1) = 3+2+1 = 6$$
