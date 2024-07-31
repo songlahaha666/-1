@@ -29,12 +29,7 @@ int main() {
 }
 ```
 
-## 2. 效能分析
-
-- $f(n) = O(n)$
-- $S(P) = 1 \times n$, 1 個變數、n 次遞迴。
-- $T(P) = C \times n$, 每層迴圈所需 C 時間、n 次遞迴。
-## 3. 測試與過程
+## 3. 效能分析
 
 ### Worst Case
 
@@ -51,6 +46,8 @@ int main() {
 ### Average Case
 
 近似於Worst Case
+
+## 4. 測試與過程
 
 ### Input
 
